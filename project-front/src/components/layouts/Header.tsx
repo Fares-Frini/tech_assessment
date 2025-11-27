@@ -37,7 +37,6 @@ export default function Header() {
   return (
     <header className="w-full border-b border-black/10 bg-white/70 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
-        {/* Logo / Brand */}
         <Link
           href="/"
           className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
@@ -102,9 +101,9 @@ export default function Header() {
               fill="currentColor"
             />
           </svg>
+          <span className="text-xl font-semibold tracking-tight text-black">Canvas</span>
         </Link>
 
-        {/* Nav principal */}
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList>
             <NavigationMenuItem>
@@ -140,14 +139,15 @@ export default function Header() {
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/canvas" legacyBehavior passHref>
-                <NavigationMenuLink
+              <NavigationMenuLink asChild>
+                <Link
+                  href="/canvas"
                   className={navigationMenuTriggerStyle() + " text-sm font-medium uppercase transition-colors hover:text-primary"}
                   style={{ fontFamily: '"Suisse Intl", sans-serif' }}
                 >
                   Canvas
-                </NavigationMenuLink>
-              </Link>
+                </Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
@@ -266,6 +266,7 @@ export default function Header() {
                       fill="currentColor"
                     />
                   </svg>
+                  <span className="text-xl font-bold text-black/80 tracking-tight ml-1">Canvas</span>
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-4 mt-6">

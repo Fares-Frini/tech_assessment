@@ -19,6 +19,7 @@ import Konva from "konva";
 import { Camera, Clock, Download, ImageIcon, Loader2, Redo2, RotateCcw, Save, Sparkles, Trash2, Undo2, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CameraCapture } from "./components/canvas/CameraCapture";
 import { CANVAS_DROPPABLE_ID, CanvasStage, DropPreview, PlacedItem } from "./components/canvas/CanvasStage";
@@ -56,7 +57,26 @@ function DroppableCanvas({ children }: { children: React.ReactNode }) {
 }
 
 export default function CanvasPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login?callbackUrl=/canvas");
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-violet-600" />
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated") {
+    return null;
+  }
 
   const [photo, setPhoto] = useState<string | null>(null);
 

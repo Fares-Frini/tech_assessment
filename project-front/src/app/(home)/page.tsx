@@ -12,6 +12,7 @@ import {
     Wand2,
 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -144,17 +145,13 @@ export default function HomePage() {
             {/* Right: Hero Image/Preview */}
             <div className="relative">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-purple-500/20 border border-purple-100">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center">
-                  {/* Placeholder for hero image - you can replace with actual image */}
-                  <div className="text-center p-8">
-                    <div className="w-24 h-24 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center shadow-lg">
-                      <Sparkles className="w-12 h-12 text-white" />
-                    </div>
-                    <p className="text-purple-600 font-medium">
-                      Your smile, enhanced
-                    </p>
-                  </div>
-                </div>
+                <Image
+                  src="https://media.luce.es/products/a5f95dc6-09eb-4680-92fa-83e690968022/055fec16a2e231cc.webp"
+                  alt="Smile with dental jewelry"
+                  fill
+                  className="object-cover"
+                  priority
+                />
               </div>
 
               {/* Floating elements */}
