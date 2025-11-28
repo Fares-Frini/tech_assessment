@@ -3,6 +3,7 @@
 import { SavedImagesGrid } from '@/components/home/SavedImagesGrid';
 import { StartOptionsDialog } from '@/components/home/StartOptionsDialog';
 import { Button } from '@/components/ui/button';
+import { useSavedImagesQuery } from '@/lib/queries/useSavedImagesQuery';
 import {
     Camera,
     ChevronRight,
@@ -15,14 +16,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-
-interface SavedImage {
-  id: string;
-  name: string;
-  imagePath: string;
-  createdAt: string;
-}
+import { useState } from 'react';
 
 const FEATURES = [
   {
@@ -46,10 +40,14 @@ export default function HomePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [showDialog, setShowDialog] = useState(false);
-  const [savedImages, setSavedImages] = useState<SavedImage[]>([]);
-  const [isLoadingImages, setIsLoadingImages] = useState(false);
 
   const isAuthenticated = status === 'authenticated';
+
+  // Use TanStack Query for fetching saved images
+  const { data: savedImages = [], isLoading: isLoadingImages } = useSavedImagesQuery(
+    session?.accessToken,
+    6 // Limit to 6 images on home page
+  );
 
   const handleStartNow = () => {
     if (isAuthenticated) {
@@ -59,39 +57,9 @@ export default function HomePage() {
     }
   };
 
-  useEffect(() => {
-    const fetchSavedImages = async () => {
-      if (session?.accessToken) {
-        setIsLoadingImages(true);
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/saved-images`,
-            {
-              headers: {
-                Authorization: `Bearer ${session.accessToken}`,
-              },
-            }
-          );
-          if (response.ok) {
-            const data = await response.json();
-            setSavedImages(data);
-          }
-        } catch (error) {
-          console.error('Failed to fetch saved images:', error);
-        } finally {
-          setIsLoadingImages(false);
-        }
-      }
-    };
-
-    fetchSavedImages();
-  }, [session]);
-
   return (
     <main className="min-h-screen">
-      {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-purple-50 via-white to-white">
-        {/* Background decoration */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-200/30 rounded-full blur-3xl" />
           <div className="absolute top-20 -left-20 w-60 h-60 bg-purple-300/20 rounded-full blur-3xl" />
@@ -99,7 +67,6 @@ export default function HomePage() {
 
         <div className="relative max-w-6xl mx-auto px-4 py-16 sm:py-24 md:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left: Text Content */}
             <div className="text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-100 text-purple-700 text-sm font-medium mb-6">
                 <Sparkles className="w-4 h-4" />
@@ -142,7 +109,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right: Hero Image/Preview */}
             <div className="relative">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl shadow-purple-500/20 border border-purple-100">
                 <Image
@@ -154,7 +120,6 @@ export default function HomePage() {
                 />
               </div>
 
-              {/* Floating elements */}
               <div className="absolute -bottom-4 -left-4 bg-white rounded-xl shadow-lg p-3 flex items-center gap-3 border border-gray-100">
                 <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
                   <Camera className="w-5 h-5 text-green-600" />
@@ -183,7 +148,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* How It Works Section */}
       <section className="py-16 sm:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
@@ -217,7 +181,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Saved Images Section (for authenticated users) */}
       {isAuthenticated && (
         <section className="py-16 sm:py-24 bg-gray-50">
           <div className="max-w-6xl mx-auto px-4">
@@ -251,7 +214,6 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* CTA Section (for unauthenticated users) */}
       {!isAuthenticated && (
         <section className="py-16 sm:py-24 bg-gradient-to-b from-white to-purple-50">
           <div className="max-w-4xl mx-auto px-4 text-center">
@@ -286,7 +248,6 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Start Options Dialog */}
       <StartOptionsDialog
         open={showDialog}
         onClose={() => setShowDialog(false)}

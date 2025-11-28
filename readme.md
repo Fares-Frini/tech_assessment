@@ -202,32 +202,6 @@ Open your browser to `http://localhost:3000`. You can log in with the seeded tes
 6. **User adjusts item positions** using the transform handles
 7. **User saves or downloads** the final composition
 
-### Data Flow
-
-```
-┌─────────────┐     HTTP/REST      ┌─────────────┐     Prisma     ┌────────────┐
-│   Browser   │ ←───────────────→  │   NestJS    │ ←───────────→  │ PostgreSQL │
-│  (Next.js)  │                    │    API      │                │            │
-└─────────────┘                    └─────────────┘                └────────────┘
-      │                                   │
-      │ TanStack Query                    │ Multer
-      │ for caching                       │ for file uploads
-      ↓                                   ↓
-┌─────────────┐                    ┌─────────────┐
-│ Local State │                    │  File       │
-│ (Canvas)    │                    │  Storage    │
-└─────────────┘                    └─────────────┘
-```
-
-### Authentication Flow
-
-1. User submits credentials to `/auth/login`
-2. Backend validates credentials against the database
-3. Backend returns a JWT token
-4. Frontend stores the token via NextAuth.js session
-5. Subsequent requests include the token in the Authorization header
-6. Protected routes validate the token before processing
-
 ### Canvas Rendering
 
 The canvas uses a layered approach:
@@ -294,7 +268,7 @@ The frontend can be deployed to Vercel:
 4. Add environment variables in Vercel dashboard
 5. Deploy
 
-### Backend (Railway, Render, or VPS)
+### Backend (Render or Azure)
 
 The backend needs a Node.js runtime and PostgreSQL:
 
@@ -307,6 +281,3 @@ Make sure to update CORS settings in `main.ts` to allow your frontend domain.
 
 ---
 
-## License
-
-This project was created as a technical assessment.
