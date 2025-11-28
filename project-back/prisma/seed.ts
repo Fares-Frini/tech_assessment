@@ -30,7 +30,8 @@ async function main() {
   console.log('Test user created:', testUser.email);
 
   // Source image path - update this to your actual jewel.png location
-  const sourcePath = '/uploads/jewel.png';
+  const sourcePath =
+    '/opt/render/project/src/project-back/uploads/1764329647312-jewel.png';
 
   // Generate unique filename and copy to uploads folder
   const timestamp = Date.now();
