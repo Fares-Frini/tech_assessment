@@ -30,8 +30,7 @@ async function main() {
   console.log('Test user created:', testUser.email);
 
   // Source image path - update this to your actual jewel.png location
-  const sourcePath =
-    'C:\\Users\\feyta\\Documents\\dev\\tech_assessment\\jewel.png';
+  const sourcePath = './jewel.png';
 
   // Generate unique filename and copy to uploads folder
   const timestamp = Date.now();
